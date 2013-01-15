@@ -1,0 +1,10 @@
+% # vim:set sw=4 ts=4 ft=html expandtab:
+% layout 'default';
+<h2>Suppression du pad <%= $pad %></h2>
+<form>
+    <fieldset>
+        <legend>&Ecirc;tes-vous bien s&ucirc;r ?</legend>
+        <input type="hidden" value="<%= $pad %>" name="pad" id="pad">
+        <a class="btn btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'home' %>">Annuler</a>
+        <button type="submit" class="btn btn-success" formaction="<%= $self->config->{urlprefix} %><%= url_for 'delete' %>" formmethod=post>Supprimer</button>
+</form>

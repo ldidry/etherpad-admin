@@ -1,0 +1,128 @@
+#! /bin/sh
+
+# vim: set ts=3 sw=3 tw=0:
+# vim: set expandtab:
+   
+### BEGIN INIT INFO
+# Provides: Etherpad-admin
+# Required-Start: $local_fs $remote_fs $network $syslog
+# Required-Stop: $local_fs $remote_fs $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: initscript to start etherpad-admin with hypnotoad
+# Description: initscript to start etherpad-admin with hypnotoad
+### END INIT INFO
+
+
+DAEMON=/var/www/etherpad_admin/script/etherpad_admin
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
+NAME="Etherpad-admin"
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+log_daemon_msg()
+{
+   echo -n $*
+}
+
+log_end_msg()
+{
+   if [ "$1" = "0" ]; then
+      echo " [ok]"
+   else
+      echo " [failed]"
+   fi
+}
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+   # Return
+   # 0 if daemon has been started
+   # 1 if daemon was already running
+   # 2 if daemon could not be started
+
+   hypnotoad $DAEMON
+   RETVAL="$?"
+   return "$RETVAL"
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+   # Return
+   # 0 if daemon has been stopped
+   # 1 if daemon was already stopped
+   # 2 if daemon could not be stopped
+   # other if a failure occurred
+
+   hypnotoad -s $DAEMON >/dev/null 2>&1
+   RETVAL="$?"
+   return "$RETVAL"
+}
+
+#
+# Function that checks the status of the daemon/service
+#
+do_status()
+{
+   pidof $DAEMON >/dev/null 2>&1
+   if [ "$?" = "0" ]; then
+      log_daemon_msg "$NAME is running"
+      echo ""
+   else
+      log_daemon_msg "$NAME is NOT running"
+      echo ""
+   fi
+}
+
+case "$1" in
+   start)
+      [ "$VERBOSE" != no ] && log_daemon_msg "Starting $NAME"
+      pidof $DAEMON >/dev/null 2>&1
+      if [ "$?" = "0" ]; then
+         log_daemon_msg "$NAME is already running. Unable to start"
+         echo ""
+      else
+         do_start
+         RETVAL="$?"
+         case "$RETVAL" in
+            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+            2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+         esac
+      fi
+      ;;
+   stop)
+      [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $NAME"
+      pidof $DAEMON >/dev/null 2>&1
+      if [ "$?" = "0" ]; then
+         do_stop
+         case "$?" in
+            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+            2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+         esac
+      else
+         log_daemon_msg "$NAME is NOT running. Unable to stop"
+         echo ""
+      fi
+      ;;
+   status)
+      do_status
+      ;;
+   restart)
+      log_daemon_msg "Restarting $NAME"
+      do_stop
+      sleep 1
+      do_start
+      echo ""
+      ;;
+   *)
+      echo "Usage: $0 {start|stop|status|restart}" >&2
+      exit 3
+      ;;
+esac

@@ -1,0 +1,28 @@
+% # vim:set sw=4 ts=4 ft=html expandtab:
+% layout 'default';
+% if ($info) {
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <%= $info %>
+    </div>
+% }
+<h2>Liste des pads</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom du pad</th>
+            <th>Url</th>
+        </tr>
+    </thead>
+    <tbody>
+% foreach my $pad (@{$pads}) {
+        <tr>
+            <td><%= $pad %></td>
+            <td>
+                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+                <a class="btn btn-mini btn-danger pull-right" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
+            </td>
+        </tr>
+% }
+    </tbody>
+</table>
