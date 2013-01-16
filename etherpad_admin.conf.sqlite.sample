@@ -1,0 +1,15 @@
+{
+    hypnotoad => {
+        user    => 'www-data',
+        group   => 'www-data',
+        listen  => ['http://127.0.0.1:4242'],
+        workers => 2
+    },
+    db => {
+        type   => 'sqlite',
+        dbfile => '/var/www/etherpad/var/etherpad.db',
+    },
+    etherpadurl => 'https://etherpad.example.com',
+    urlprefix   => ''
+};
+

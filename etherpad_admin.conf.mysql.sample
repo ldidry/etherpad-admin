@@ -1,17 +1,18 @@
 {
     hypnotoad => {
-        user => 'www-data',
-        group => 'www-data',
-        listen => ['http://127.0.0.1:4242'],
+        user    => 'www-data',
+        group   => 'www-data',
+        listen  => ['http://127.0.0.1:4242'],
         workers => 2
     },
     db => {
-        host => 'localhost',
+        type   => 'mysql',
+        host   => 'localhost',
         dbname => 'etherpad_dbname',
         dbuser => 'etherpad_dbuser',
         dbpass => 'etherpad_dbpass'
     },
     etherpadurl => 'https://etherpad.example.com',
-    urlprefix => '/'
+    urlprefix   => ''
 };
 

@@ -19,11 +19,15 @@ sub startup {
     );
     $self->app->helper(
         db => sub {
-            return Schema->connect(
-                'dbi:mysql:host='.$self->config->{db}->{host}.':dbname='.$self->config->{db}->{dbname},
-                $self->config->{db}->{dbuser},
-                $self->config->{db}->{dbpass}
-            );
+            if ($self->config->{db}->{type} eq 'sqlite') {
+                return Schema->connect('dbi:SQLite:dbname='.$self->config->{db}->{dbfile});
+            } elsif ($self->config->{db}->{type} eq 'mysql') {
+                return Schema->connect(
+                    'dbi:mysql:host='.$self->config->{db}->{host}.':dbname='.$self->config->{db}->{dbname},
+                    $self->config->{db}->{dbuser},
+                    $self->config->{db}->{dbpass}
+                );
+            }
         }
     );
 
