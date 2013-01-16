@@ -7,6 +7,7 @@ Etherpad-admin est une interface permettant de lister tous les pads existants su
 ##IMPORTANT
 Etherpad-admin a été développé vite et pour cette raison ne se base pas sur l'API d'Etherpad-lite mais sur la base de données qu'il utilise.
 C'est sale, je le sais, c'est peut-être dangereux, je tiens à ce que vous le sachiez.
+De plus, il n'y a pas d'authentification, et cela permet donc à n'importe qui d'effacer des pads. Pensez à mettre une authentification sur le serveur web (cf fichier d'exemple nginx).
 
 ##Dépendances
 Etherpad-admin utilise le framework Perl Mojolicious et, pour l'accès à la base de données, la bibliothèque DBIx::Class.
