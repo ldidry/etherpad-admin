@@ -6,13 +6,10 @@
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="<%= $self->config->{urlprefix} %><%= url_for 'home' %>css/bootstrap.min.css" rel="stylesheet" media="screen">
         <style>
-            body {
-                padding-top: 60px;
-            }
+            body { padding-top: 60px; }
         </style>
-        <link href="<%= $self->config->{urlprefix} %><%= url_for 'home' %>css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="<%= $self->config->{urlprefix} %><%= url_for 'home' %>css/bootstrap.min.css" rel="stylesheet" media="screen">
     </head>
     <body id="Body">
         <div id="topbar" class="navbar navbar-fixed-top">
@@ -30,10 +27,6 @@
                 </div>
             </div>
         </div>
-
-        <script src="<%= $self->config->{urlprefix} %><%= url_for 'home' %>js/jquery-latest.js"></script>
-        <script src="<%= $self->config->{urlprefix} %><%= url_for 'home' %>js/bootstrap.min.js"></script>
-
         <div class="container">
             <div class="row-fluid">
                 <%= content %>
