@@ -9,6 +9,7 @@
         type   => 'sqlite',
         dbfile => '/var/www/etherpad/var/etherpad.db',
     },
+    allowdelete => 0,
     etherpadurl => 'https://etherpad.example.com',
     urlprefix   => ''
 };

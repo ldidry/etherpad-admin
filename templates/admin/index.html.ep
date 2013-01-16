@@ -20,7 +20,9 @@
             <td><%= $pad %></td>
             <td>
                 <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+%   if ($self->config->{allowdelete}) {
                 <a class="btn btn-mini btn-danger pull-right" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
+%   }
             </td>
         </tr>
 % }

@@ -22,6 +22,7 @@ Pour Debian, ces modules sont fournis respectivement par les paquets libdbd-sqli
 ##Configuration
 Vous trouverez deux exemples de fichiers de configurations dans le dépôt git : `etherpad_admin.conf.sqlite.sample` et `etherpad_admin.conf.mysql.sample`.
 Recopiez ou renommez celui dont vous avez besoin en `etherpad_admin.conf`.
+* `allowdelete` : permet de juste lister les pads si égal à 0, permet (à tout visiteur !) de supprimer les pads si égal à 1.
 * `etherpadurl` : est l'adresse du pad qui est administré
 * `urlprefix`   : le chemin qui vous permet d'accéder à etherpad-admin.
   Par exemple, si vous y accédez par l'URL http://example.com/etherpad-admin/, urlprefix doit être '/etherpad-admin'.
@@ -52,6 +53,7 @@ Recopiez ou renommez celui dont vous avez besoin en `etherpad_admin.conf`.
         dbpass => 'etherpad_dbpass'
     },
 ##
+    allowdelete => 0,
     etherpadurl => 'https://etherpad.example.com',
     urlprefix   => ''
 };

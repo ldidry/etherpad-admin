@@ -12,6 +12,7 @@
         dbuser => 'etherpad_dbuser',
         dbpass => 'etherpad_dbpass'
     },
+    allowdelete => 0,
     etherpadurl => 'https://etherpad.example.com',
     urlprefix   => ''
 };

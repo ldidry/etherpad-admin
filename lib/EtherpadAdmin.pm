@@ -39,11 +39,13 @@ sub startup {
         name('home')->
         to(controller => 'Admin', action => 'index');
 
-    $r->get('/delete/:pad')->
-        to('admin#delete');
+    if ($config->{allowdelete}) {
+        $r->get('/delete/:pad')->
+            to('admin#delete');
 
-    $r->post('/delete')->
-        to(controller => 'Admin', action => 'pdelete');
+        $r->post('/delete')->
+            to(controller => 'Admin', action => 'pdelete');
+    }
 }
 
 1;
