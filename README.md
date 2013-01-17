@@ -61,8 +61,8 @@ Recopiez ou renommez celui dont vous avez besoin en `etherpad_admin.conf`.
 };
 ```
 
-##Twitter Bootstrap
-Etherpad-admin utilise le [Twitter Bootstrap](http://twitter.github.com/bootstrap/), dont le code est sous license [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
+##Dépendance à d'autres projets
+Etherpad-admin utilise le [Twitter Bootstrap](http://twitter.github.com/bootstrap/) dont le code est sous license [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0) ainsi que [Spin.js](http://fgnass.github.com/spin.js/) dont le code est sous license [MIT](http://opensource.org/licenses/mit-license.php).
 
 ##License
 Etherpad-admin est distribué selon les termes de la license [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
