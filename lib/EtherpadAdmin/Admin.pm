@@ -49,33 +49,43 @@ sub rename {
             pad      => $pad
         );
     } else {
-        my $rs = $db->resultset('Store')->search(
-            {
-                -or => [
-                    { 'me.value' => "\"$pad\"" },
-                    { 'me.key'   => 'pad:'.$pad },
-                    { 'me.key'   => 'pad2readonly:'.$pad },
-                    { 'me.key'   => { -like => 'pad:'.$pad.':%' } }
-                ]
-            }
-        );
+
+        my $rs = $db->resultset('Store')->search({ 'me.value' => "\"$pad\"" });
         while (my $record = $rs->next()) {
-            my $key   = $record->{_column_data}->{key};
             my $value = $record->{_column_data}->{value};
 
-            if ($key =~ s/$pad/$newname/) {
+            $value    =~ s/^"$pad"$/"$newname"/;
+            $record->update(
+                {
+                    value => $value
+                }
+            );
+        }
+
+        for my $keyword (qw/pad pad2readonly/) {
+            $rs = $db->resultset('Store')->search({ 'me.key' => "$keyword:$pad" });
+            while (my $record = $rs->next()) {
+                my $key = $record->{_column_data}->{key};
+
+                $key    =~ s/^$keyword:$pad/$keyword:$newname/;
                 $record->update(
                     {
-                        key => $key
-                    }
-                );
-            } elsif ($value =~ s/$pad/$newname/) {
-                $record->update(
-                    {
-                        value => $value
+                        'key' => $key
                     }
                 );
             }
+        }
+
+        $rs = $db->resultset('Store')->search({ 'me.key'   => { -like => 'pad:'.$pad.':%' }});
+        while (my $record = $rs->next()) {
+            my $key   = $record->{_column_data}->{key};
+
+            $key      =~ s/^pad:$pad:/pad:$newname:/;
+            $record->update(
+                {
+                    'key' => $key
+                }
+            );
         }
 
         my @pads = _getpads($self->db);
