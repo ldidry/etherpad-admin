@@ -31,14 +31,16 @@ Recopiez ou renommez celui dont vous avez besoin en `etherpad_admin.conf`.
 * `db -> type`  : deux choix sont possibles, 'sqlite' et 'mysql'.
  * sqlite : vous devrez créer une entrée `dbfile`. Mettez un chemin absolu.
  * mysql  : vous devrez créer des champs `host`, `dbname`, `dbuser` et `dbpass`
+* `hypnotoad -> inactivity_timeout` : il est nécessaire d'avoir une valeur élevée pour éviter un bug de redemande de renommage à cause d'un temps de traitement trop long.
 
 ```perl
 {
     hypnotoad => {
-        user    => 'www-data',
-        group   => 'www-data',
-        listen  => ['http://127.0.0.1:4242'],
-        workers => 2
+        user               => 'www-data',
+        group              => 'www-data',
+        listen             => ['http://127.0.0.1:4242'],
+        workers            => 2,
+        inactivity_timeout => 600
     },
 ## Pour sqlite
     db => {
