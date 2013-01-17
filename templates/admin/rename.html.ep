@@ -1,0 +1,12 @@
+% # vim:set sw=4 ts=4 ft=html expandtab:
+% layout 'default';
+<h2>Renommage du pad <%= $pad %></h2>
+<form class="form-inline">
+    <fieldset>
+        <legend>Quel est le nouveau nom du pad ?</legend>
+        <input type="hidden" value="<%= $pad %>" name="pad" id="pad">
+        <input type="text" name="newname" id="newname" placeholder="Nouveau nom">
+        <a class="btn btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'home' %>">Annuler</a>
+        <button type="submit" class="btn btn-success" formaction="<%= $self->config->{urlprefix} %><%= url_for 'rename' %>" formmethod=post>Renommer</button>
+    </fieldset>
+</form>

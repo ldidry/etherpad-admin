@@ -40,11 +40,23 @@ sub startup {
         to(controller => 'Admin', action => 'index');
 
     if ($config->{allowdelete}) {
-        $r->get('/delete/:pad')->
-            to('admin#delete');
+        $r->get('/delete/:pad' => sub {
+            $self = shift;
+            $self->render(template => 'admin/delete', info => '')
+        });
 
         $r->post('/delete')->
-            to(controller => 'Admin', action => 'pdelete');
+            to(controller => 'Admin', action => 'delete');
+    }
+
+    if ($config->{allowrename}) {
+        $r->get('/rename/:pad' => sub {
+            $self = shift;
+            $self->render(template => 'admin/rename', info => '')
+        });
+
+        $r->post('/rename')->
+            to(controller => 'Admin', action => 'rename');
     }
 }
 

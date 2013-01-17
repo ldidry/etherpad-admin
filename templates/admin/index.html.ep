@@ -1,11 +1,5 @@
 % # vim:set sw=4 ts=4 ft=html expandtab:
 % layout 'default';
-% if ($info) {
-    <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <%= $info %>
-    </div>
-% }
 <h2>Liste des pads</h2>
 <table class="table table-striped">
     <thead>
@@ -20,9 +14,14 @@
             <td><%= $pad %></td>
             <td>
                 <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+                <span class="pull-right">
 %   if ($self->config->{allowdelete}) {
-                <a class="btn btn-mini btn-danger pull-right" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
+                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
 %   }
+%   if ($self->config->{allowrename}) {
+                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad %>">Renommer</a>
+%   }
+                </span>
             </td>
         </tr>
 % }
