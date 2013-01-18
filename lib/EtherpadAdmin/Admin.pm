@@ -26,48 +26,72 @@ sub rename {
         );
     }
 
-    $newname =~ s/\s+/_/g;
-    $newname =~ s/:+/_/g;
-
-    my $db    = $self->db;
-    my $taken = $db->resultset('Store')->find(
-        {
-            'me.key' => 'pad2readonly:'.$newname
-        }
-    );
-
-    if ($taken) {
+    if ($newname =~ m/\//) {
         $self->render(
             template => 'admin/rename',
-            info     => ['alert-block', 'Le nom '.$newname.' existe déjà. Veuillez en choisir un autre.'],
+            info     => ['alert-block', 'Le nom d\un pad ne peut pas contenir de slash (\'/\'). Veuillez en choisir un autre.'],
             pad      => $pad
         );
     } else {
-        my $notfound = 0;
+        $newname =~ s/\s+/_/g;
+        $newname =~ s/:+/_/g;
 
-        my $rs = $db->resultset('Store')->search({ 'me.value' => "\"$pad\"" });
-        if ($rs->count()) {
-            while (my $record = $rs->next()) {
-                my $value = $record->{_column_data}->{value};
-
-                $value    =~ s/^"$pad"$/"$newname"/;
-                $record->update(
-                    {
-                        'value' => $value
-                    }
-                );
+        my $db    = $self->db;
+        my $taken = $db->resultset('Store')->find(
+            {
+                'me.key' => 'pad2readonly:'.$newname
             }
-        } else {
-            $notfound++;
-        }
+        );
 
-        for my $keyword (qw/pad pad2readonly/) {
-            $rs = $db->resultset('Store')->search({ 'me.key' => "$keyword:$pad" });
+        if ($taken) {
+            $self->render(
+                template => 'admin/rename',
+                info     => ['alert-block', 'Le nom '.$newname.' existe déjà. Veuillez en choisir un autre.'],
+                pad      => $pad
+            );
+        } else {
+            my $notfound = 0;
+
+            my $rs = $db->resultset('Store')->search({ 'me.value' => "\"$pad\"" });
             if ($rs->count()) {
                 while (my $record = $rs->next()) {
-                    my $key = $record->{_column_data}->{key};
+                    my $value = $record->{_column_data}->{value};
 
-                    $key    =~ s/^$keyword:$pad/$keyword:$newname/;
+                    $value    =~ s/^"$pad"$/"$newname"/;
+                    $record->update(
+                        {
+                            'value' => $value
+                        }
+                    );
+                }
+            } else {
+                $notfound++;
+            }
+
+            for my $keyword (qw/pad pad2readonly/) {
+                $rs = $db->resultset('Store')->search({ 'me.key' => "$keyword:$pad" });
+                if ($rs->count()) {
+                    while (my $record = $rs->next()) {
+                        my $key = $record->{_column_data}->{key};
+
+                        $key    =~ s/^$keyword:$pad/$keyword:$newname/;
+                        $record->update(
+                            {
+                                'key' => $key
+                            }
+                        );
+                    }
+                } else {
+                    $notfound++;
+                }
+            }
+
+            $rs = $db->resultset('Store')->search({ 'me.key'   => { -like => 'pad:'.$pad.':%' }});
+            if ($rs->count()) {
+                while (my $record = $rs->next()) {
+                    my $key   = $record->{_column_data}->{key};
+
+                    $key      =~ s/^pad:$pad:/pad:$newname:/;
                     $record->update(
                         {
                             'key' => $key
@@ -77,38 +101,22 @@ sub rename {
             } else {
                 $notfound++;
             }
-        }
 
-        $rs = $db->resultset('Store')->search({ 'me.key'   => { -like => 'pad:'.$pad.':%' }});
-        if ($rs->count()) {
-            while (my $record = $rs->next()) {
-                my $key   = $record->{_column_data}->{key};
-
-                $key      =~ s/^pad:$pad:/pad:$newname:/;
-                $record->update(
-                    {
-                        'key' => $key
-                    }
-                );
+            my $info;
+            if ($notfound == 4) {
+                $info = ['alert-error', 'Le pad '.$pad.' n\'a pas été retrouvé et n\'a donc pu être renommé en '.$newname.'.'];
+            } else {
+                $info = ['alert-success', 'Le pad '.$pad.' a bien été renommé en '.$newname.'.'];
             }
-        } else {
-            $notfound++;
+
+            my %pads = $self->pads;
+
+            $self->render(
+                template => 'admin/index',
+                pads     => \%pads,
+                info     => $info
+            );
         }
-
-        my $info;
-        if ($notfound == 4) {
-            $info = ['alert-error', 'Le pad '.$pad.' n\'a pas été retrouvé et n\'a donc pu être renommé en '.$newname.'.'];
-        } else {
-            $info = ['alert-success', 'Le pad '.$pad.' a bien été renommé en '.$newname.'.'];
-        }
-
-        my %pads = $self->pads;
-
-        $self->render(
-            template => 'admin/index',
-            pads     => \%pads,
-            info     => $info
-        );
     }
 }
 
