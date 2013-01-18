@@ -29,12 +29,11 @@ sub rename {
     if ($newname =~ m/\//) {
         $self->render(
             template => 'admin/rename',
-            info     => ['alert-block', 'Le nom d\un pad ne peut pas contenir de slash (\'/\'). Veuillez en choisir un autre.'],
+            info     => ['alert-block', 'Le nom d\'un pad ne peut pas contenir de slash (\'/\'). Veuillez en choisir un autre.'],
             pad      => $pad
         );
     } else {
-        $newname =~ s/\s+/_/g;
-        $newname =~ s/:+/_/g;
+        $newname =~ s/\s+|:+|"/_/g;
 
         my $db    = $self->db;
         my $taken = $db->resultset('Store')->find(
@@ -56,10 +55,8 @@ sub rename {
             if ($rs->count()) {
                 while (my $record = $rs->next()) {
                     my $value = $record->{_column_data}->{value};
-                    my $copy  = $newname;
 
-                    $copy  =~ s/"/\\"/g;
-                    $value =~ s/^"$pad"$/"$copy"/;
+                    $value =~ s/^"$pad"$/"$newname"/;
                     $record->update(
                         {
                             'value' => $value
