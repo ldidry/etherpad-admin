@@ -11,18 +11,27 @@
     <tbody>
 % foreach my $pad (@{$pads}) {
         <tr>
-            <td><%= $pad %></td>
+            <td><%= $pad->[0] %></td>
             <td>
-                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad->[0] %>"><%= $self->config->{etherpadurl}.'/p/'.$pad->[0] %></a>
+            </td>
+%   if ($self->config->{showreadonly}) {
+            <td>
+                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad->[1] %>"><%= $self->config->{etherpadurl}.'/p/'.$pad->[1] %></a>
+            </td>
+%   }
+%   if ($self->config->{allowdelete} || $self->config->{allowrename}) {
+            <td>
                 <span class="pull-right">
-%   if ($self->config->{allowdelete}) {
-                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
-%   }
-%   if ($self->config->{allowrename}) {
-                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad %>">Renommer</a>
-%   }
+%       if ($self->config->{allowdelete}) {
+                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad->[0] %>">Supprimer</a>
+%       }
+%       if ($self->config->{allowrename}) {
+                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad->[0] %>">Renommer</a>
+%       }
                 </span>
             </td>
+%   }
         </tr>
 % }
     </tbody>

@@ -41,9 +41,11 @@ sub startup {
             my @pads;
             while (my $pad = $rs->next()) {
                 my $padtitle = substr($pad->{_column_data}->{key}, 13);
-                push @pads, $padtitle;
+                my $padro    = $pad->{_column_data}->{value};
+                $padro       =~ s/^"|"$//g;
+                push @pads, [$padtitle, $padro];
             }
-            return sort(@pads);
+            return sort {$a->[0] cmp $b->[0]} @pads;
         }
     );
 
