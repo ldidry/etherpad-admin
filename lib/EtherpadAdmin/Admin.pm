@@ -56,8 +56,10 @@ sub rename {
             if ($rs->count()) {
                 while (my $record = $rs->next()) {
                     my $value = $record->{_column_data}->{value};
+                    my $copy  = $newname;
 
-                    $value    =~ s/^"$pad"$/"$newname"/;
+                    $copy  =~ s/"/\\"/g;
+                    $value =~ s/^"$pad"$/"$copy"/;
                     $record->update(
                         {
                             'value' => $value
