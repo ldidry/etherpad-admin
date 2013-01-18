@@ -40,5 +40,10 @@
                 <%= content %>
             </div>
         </div>
+        <footer style="text-align:center;">
+            <p><small>
+                Propulsé par <a href="http://dev.fiat-tux.fr/projects/etherpad-admin">Etherpad::Admin</a> - <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a> - &copy; 2013 <a href="http://www.fiat-tux.fr">Luc Didry</a>
+            </small></p>
+        </footer>
     </body>
 </html>
