@@ -23,13 +23,13 @@ sub startup {
                 return Schema->connect('dbi:SQLite:dbname='.$self->config->{db}->{dbfile});
             } elsif ($self->config->{db}->{type} eq 'mysql') {
                 return Schema->connect(
-                    'dbi:mysql:host='.$self->config->{db}->{host}.':dbname='.$self->config->{db}->{dbname},
+                    'dbi:mysql:host='.$self->config->{db}->{host}.';dbname='.$self->config->{db}->{dbname}.';port='.$self->config->{db}->{dbport},
                     $self->config->{db}->{dbuser},
                     $self->config->{db}->{dbpass}
                 );
             } elsif ($self->config->{db}->{type} eq 'postgresql') {
                 return Schema->connect(
-                    'dbi:Pg:host='.$self->config->{db}->{host}.':dbname='.$self->config->{db}->{dbname},
+                    'dbi:Pg:host='.$self->config->{db}->{host}.';dbname='.$self->config->{db}->{dbname}.';port='.$self->config->{db}->{dbport},
                     $self->config->{db}->{dbuser},
                     $self->config->{db}->{dbpass}
                 );
@@ -44,14 +44,27 @@ sub startup {
                 { 'me.key' => { -like => "pad2readonly:%" } }
             );
 
-            my @pads;
+            my %pads;
             while (my $pad = $rs->next()) {
                 my $padtitle = substr($pad->{_column_data}->{key}, 13);
                 my $padro    = $pad->{_column_data}->{value};
                 $padro       =~ s/^"|"$//g;
-                push @pads, [$padtitle, $padro];
+                $pads{$padtitle} = $padro;
             }
-            return sort {$a->[0] cmp $b->[0]} @pads;
+            if ($self->config->{db}->{type} eq 'sqlite' || $self->config->{db}->{type} eq 'mysql') {
+                $rs = $db->resultset('Store')->search(
+                    { 'me.key' => { 'REGEXP' => '^pad:[^:]*$' } }
+                );
+            } elsif ($self->config->{db}->{type} eq 'postgresql') {
+                $rs = $db->resultset('Store')->search(
+                    { 'me.key' => { '~' => '^pad:[^:]*$' } }
+                );
+            }
+            while (my $pad = $rs->next()) {
+                my $padtitle = substr($pad->{_column_data}->{key}, 4);
+                $pads{$padtitle} = '' if (!defined($pads{$padtitle}));
+            }
+            return %pads
         }
     );
 

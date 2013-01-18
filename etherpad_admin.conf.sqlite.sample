@@ -14,6 +14,6 @@
     allowrename  => 0,
     allowdelete  => 0,
     etherpadurl  => 'https://etherpad.example.com',
-    urlprefix    => ''
+    urlprefix    => '/liste'
 };
 

@@ -24,7 +24,7 @@
                             <span class="add-on"><i class="icon-edit"></i></span>
                             <input class="span2" id="newpad" type="text" placeholder="Nom du nouveau pad">
                         </div>
-                        <button type="submit" class="btn" onClick="window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+$(newpad).val());window.location.href='<%= $self->config->{urlprefix} %><%= url_for 'home' %>';">Cr&eacute;er un nouveau pad</button>
+                        <button type="submit" class="btn" onclick="window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+$(newpad).val());">Cr&eacute;er un nouveau pad</button>
                     </form>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         </div>
         <footer style="text-align:center;">
             <p><small>
-                Propulsé par <a href="http://dev.fiat-tux.fr/projects/etherpad-admin">Etherpad::Admin</a> - <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a> - &copy; 2013 <a href="http://www.fiat-tux.fr">Luc Didry</a>
+                <a href="http://dev.fiat-tux.fr/projects/etherpad-admin">Etherpad::Admin</a> - <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a> - &copy; 2013 <a href="http://www.fiat-tux.fr">Luc Didry</a>
             </small></p>
         </footer>
     </body>

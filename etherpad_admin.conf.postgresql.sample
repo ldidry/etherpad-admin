@@ -11,12 +11,13 @@
         host   => 'localhost',
         dbname => 'etherpad_dbname',
         dbuser => 'etherpad_dbuser',
-        dbpass => 'etherpad_dbpass'
+        dbpass => 'etherpad_dbpass',
+        dbport => 5432
     },
     showreadonly => 1,
     allowrename  => 0,
     allowdelete  => 0,
     etherpadurl  => 'https://etherpad.example.com',
-    urlprefix    => ''
+    urlprefix    => '/liste'
 };
 

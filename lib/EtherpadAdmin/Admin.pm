@@ -1,14 +1,15 @@
 # vim:set sw=4 ts=4 expandtab:
 package EtherpadAdmin::Admin;
 use Mojo::Base 'Mojolicious::Controller';
+use utf8;
 
 sub index {
     my $self = shift;
 
-    my @pads = $self->pads;
+    my %pads = $self->pads;
 
     $self->render(
-        pads => \@pads,
+        pads => \%pads,
         info => ''
     );
 }
@@ -101,11 +102,11 @@ sub rename {
             $info = ['alert-success', 'Le pad '.$pad.' a bien été renommé en '.$newname.'.'];
         }
 
-        my @pads = $self->pads;
+        my %pads = $self->pads;
 
         $self->render(
             template => 'admin/index',
-            pads     => \@pads,
+            pads     => \%pads,
             info     => $info
         );
     }
@@ -140,11 +141,11 @@ sub delete {
         $info = ['alert-error', 'Le pad '.$pad.' n\'a pas été retrouvé et n\'a donc pu être supprimé'];
     }
 
-    my @pads = $self->pads;
+    my %pads = $self->pads;
 
     $self->render(
         template => 'admin/index',
-        pads     => \@pads,
+        pads     => \%pads,
         info     => $info
     );
 }
