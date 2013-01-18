@@ -25,7 +25,11 @@ sub startup {
                 return Schema->connect(
                     'dbi:mysql:host='.$self->config->{db}->{host}.';dbname='.$self->config->{db}->{dbname}.';port='.$self->config->{db}->{dbport},
                     $self->config->{db}->{dbuser},
-                    $self->config->{db}->{dbpass}
+                    $self->config->{db}->{dbpass},
+		    {
+                      quote_char => '`',
+                      name_sep   => '.'
+                    }
                 );
             } elsif ($self->config->{db}->{type} eq 'postgresql') {
                 return Schema->connect(

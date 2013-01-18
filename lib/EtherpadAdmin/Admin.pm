@@ -53,7 +53,7 @@ sub rename {
                 $value    =~ s/^"$pad"$/"$newname"/;
                 $record->update(
                     {
-                        value => $value
+                        'value' => $value
                     }
                 );
             }
@@ -120,10 +120,10 @@ sub delete {
     my $rs = $db->resultset('Store')->search(
         {
             -or => [
-                { 'me.value' => "\"$pad\"" },
-                { 'me.key'   => 'pad:'.$pad },
-                { 'me.key'   => 'pad2readonly:'.$pad },
-                { 'me.key'   => { -like => 'pad:'.$pad.':%' } }
+                { 'value' => "\"$pad\""},
+                { 'key'   => 'pad:'.$pad },
+                { 'key'   => 'pad2readonly:'.$pad },
+                { 'key'   => { -like => 'pad:'.$pad.':%' } }
             ]
         }
     );
@@ -131,10 +131,6 @@ sub delete {
     my $info;
     if ($rs->count()) {
         $rs->delete();
-
-        $rs = $db->resultset('Store')->search(
-            { 'me.key' => { -like => "pad2readonly:%" } }
-        );
 
         $info = ['alert-success', 'Le pad '.$pad.' a bien été supprimé.'];
     } else {
