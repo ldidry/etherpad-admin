@@ -30,6 +30,23 @@ sub startup {
             }
         }
     );
+    $self->app->helper(
+        pads => sub {
+            my $db = $self->db;
+
+            my $rs = $db->resultset('Store')->search(
+                { 'me.key' => { -like => "pad2readonly:%" } }
+            );
+
+            my @pads;
+            while (my $pad = $rs->next()) {
+                my $padtitle = substr($pad->{_column_data}->{key}, 13);
+                push @pads, $padtitle;
+            }
+            return sort(@pads);
+        }
+    );
+
 
     # Router
     my $r = $self->routes;

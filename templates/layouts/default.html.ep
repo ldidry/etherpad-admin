@@ -32,9 +32,9 @@
         <div class="container">
             <div class="row-fluid">
 % if ($info) {
-                <div class="alert alert-info">
+                <div class="alert <%= $info->[0] %>">
                     <button type="button" class="close" data-dismiss="alert">×</button>
-                    <%= $info %>
+                    <%= $info->[1] %>
                 </div>
 % }
                 <%= content %>
