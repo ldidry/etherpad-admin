@@ -27,6 +27,12 @@ sub startup {
                     $self->config->{db}->{dbuser},
                     $self->config->{db}->{dbpass}
                 );
+            } elsif ($self->config->{db}->{type} eq 'postgresql') {
+                return Schema->connect(
+                    'dbi:Pg:host='.$self->config->{db}->{host}.':dbname='.$self->config->{db}->{dbname},
+                    $self->config->{db}->{dbuser},
+                    $self->config->{db}->{dbpass}
+                );
             }
         }
     );

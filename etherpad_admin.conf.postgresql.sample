@@ -1,0 +1,22 @@
+{
+    hypnotoad => {
+        user               => 'www-data',
+        group              => 'www-data',
+        listen             => ['http://127.0.0.1:4242'],
+        workers            => 2,
+        inactivity_timeout => 600
+    },
+    db => {
+        type   => 'postgresql',
+        host   => 'localhost',
+        dbname => 'etherpad_dbname',
+        dbuser => 'etherpad_dbuser',
+        dbpass => 'etherpad_dbpass'
+    },
+    showreadonly => 1,
+    allowrename  => 0,
+    allowdelete  => 0,
+    etherpadurl  => 'https://etherpad.example.com',
+    urlprefix    => ''
+};
+
