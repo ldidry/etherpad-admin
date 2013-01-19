@@ -7,10 +7,18 @@ use Schema;
 sub startup {
     my $self = shift;
 
+    ## Plugins
     # Documentation browser under "/perldoc"
     $self->plugin('PODRenderer');
+
+    # Config
     my $config = $self->plugin('Config'); 
 
+    # Internationalization
+    $self->plugin('I18N');
+
+
+    ## Helpers
     $self->app->helper(
         debug => sub {
             use Data::Dumper;
@@ -73,10 +81,11 @@ sub startup {
     );
 
 
-    # Router
+    ## Router
     my $r = $self->routes;
 
-    # Normal route to controller
+
+    ## Normal routes to controller
     $r->get('/')->
         name('home')->
         to(controller => 'Admin', action => 'index');

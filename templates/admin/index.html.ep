@@ -1,13 +1,13 @@
 % # vim:set sw=4 ts=4 ft=html expandtab:
 % layout 'default';
-<h2>Liste des pads</h2>
+<h2><%=l 'pads_list' %></h2>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Nom du pad</th>
-            <th>Url</th>
+            <th><%=l 'pad_name' %></th>
+            <th><%=l 'url' %></th>
 % if ($self->config->{showreadonly}) {
-            <th>Url de lecture seule</th>
+            <th><%=l 'url_ro' %></th>
 % }
         </tr>
     </thead>
@@ -30,10 +30,10 @@
             <td>
                 <span class="pull-right">
 %       if ($self->config->{allowdelete}) {
-                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>">Supprimer</a>
+                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>"><%=l 'delete' %></a>
 %       }
 %       if ($self->config->{allowrename}) {
-                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad %>">Renommer</a>
+                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad %>"><%=l 'rename' %></a>
 %       }
                 </span>
             </td>

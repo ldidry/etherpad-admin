@@ -21,7 +21,7 @@ sub rename {
     if (!$newname) {
         $self->render(
             template => 'admin/rename',
-            info     => ['alert-error', 'Le nouveau nom ne peut peut être nul !.'],
+            info     => ['alert-error', $self->l('newname_notnull')],
             pad      => $pad
         );
     }
@@ -29,7 +29,7 @@ sub rename {
     if ($newname =~ m/\//) {
         $self->render(
             template => 'admin/rename',
-            info     => ['alert-block', 'Le nom d\'un pad ne peut pas contenir de slash (\'/\'). Veuillez en choisir un autre.'],
+            info     => ['alert-block', $self->l('newname_noslash')],
             pad      => $pad
         );
     } else {
@@ -45,7 +45,7 @@ sub rename {
         if ($taken) {
             $self->render(
                 template => 'admin/rename',
-                info     => ['alert-block', 'Le nom '.$newname.' existe déjà. Veuillez en choisir un autre.'],
+                info     => ['alert-block', $self->l('newname_exists', $newname)],
                 pad      => $pad
             );
         } else {
@@ -103,9 +103,9 @@ sub rename {
 
             my $info;
             if ($notfound == 4) {
-                $info = ['alert-error', 'Le pad '.$pad.' n\'a pas été retrouvé et n\'a donc pu être renommé en '.$newname.'.'];
+                $info = ['alert-error', $self->l('pad_rename_notfound', $pad, $newname)];
             } else {
-                $info = ['alert-success', 'Le pad '.$pad.' a bien été renommé en '.$newname.'.'];
+                $info = ['alert-success', $self->l('pad_rename_success', $pad, $newname)];
             }
 
             my %pads = $self->pads;
@@ -139,9 +139,9 @@ sub delete {
     if ($rs->count()) {
         $rs->delete();
 
-        $info = ['alert-success', 'Le pad '.$pad.' a bien été supprimé.'];
+        $info = ['alert-success', $self->l('pad_delete_success', $pad)];
     } else {
-        $info = ['alert-error', 'Le pad '.$pad.' n\'a pas été retrouvé et n\'a donc pu être supprimé'];
+        $info = ['alert-error', $self->l('pad_delete_notfound', $pad)];
     }
 
     my %pads = $self->pads;

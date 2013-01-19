@@ -22,9 +22,9 @@
                     <form class="navbar-form pull-right form-inline">
                         <div class="input-prepend">
                             <span class="add-on"><i class="icon-edit"></i></span>
-                            <input class="span2" id="newpad" type="text" placeholder="Nom du nouveau pad">
+                            <input class="span2" id="newpad" type="text" placeholder="<%=l 'new_pad_name' %>">
                         </div>
-                        <button type="submit" class="btn" onclick="window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+$(newpad).val());">Cr&eacute;er un nouveau pad</button>
+                        <button type="submit" class="btn" onclick="window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+$(newpad).val());"><%=l 'create_new_pad' %></button>
                     </form>
                 </div>
             </div>
