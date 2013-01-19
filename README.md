@@ -21,6 +21,7 @@ __Note__: Le binaire /usr/bin/hypnotoad (fourni par Mojolicious) utilisé par et
 
 ```shell
 cpan Mojolicious
+cpan Mojolicious::Plugin::I18N
 ```
 
 Pour l'accès à la base de données, vous aurez besoin de DBD::SQLite, de DBD::mysql ou de DBD::Pg selon votre type de base de données.
