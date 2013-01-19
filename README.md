@@ -11,10 +11,13 @@ De plus, il n'y a pas d'authentification, et cela permet donc à n'importe qui d
 
 ##Dépendances
 Etherpad-admin utilise le framework Perl Mojolicious et, pour l'accès à la base de données, la bibliothèque DBIx::Class.
+
 Utilisez la commande cpan pour les installer ou, pour Debian :
 ```shell
 apt-get install libmojolicious-perl libdbix-class-perl
 ```
+
+__Note__: Le binaire `/usr/bin/hypnotoad` utilisé par etherpad-admin, n'est disponible qu'à partir de la version wheezy de l'archive Debian (debian7).
 
 Pour l'accès à la base de données, vous aurez besoin de DBD::SQLite, de DBD::mysql ou de DBD::Pg selon votre type de base de données.
 Pour Debian, ces modules sont fournis respectivement par les paquets libdbd-sqlite3-perl, libdbd-mysql-perl et libdbd-pg-perl.
