@@ -30,6 +30,12 @@ The internationalization system uses the Perl module Mojolicious::Plugin::I18N. 
 cpan Mojolicious::Plugin::I18N
 ```
 
+Enfin, pour l'internationalisation, j'utilise Mojolicious::Plugin::I18N. Le plus simple est encore de l'installer par le CPAN :
+
+```shell
+cpan Mojolicious::Plugin::I18N
+```
+
 ##Configuration
 You will find three configuration examples in the git repository : `etherpad_admin.conf.sqlite.sample`, `etherpad_admin.conf.mysql.sample` and `etherpad_admin.conf.postgresql.sample`.
 Recopy or rename the one you need in `etherpad_admin.conf`.
