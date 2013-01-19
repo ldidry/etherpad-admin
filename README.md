@@ -26,6 +26,12 @@ cpan Mojolicious
 Pour l'accès à la base de données, vous aurez besoin de DBD::SQLite, de DBD::mysql ou de DBD::Pg selon votre type de base de données.
 Pour Debian, ces modules sont fournis respectivement par les paquets libdbd-sqlite3-perl, libdbd-mysql-perl et libdbd-pg-perl.
 
+Enfin, pour l'internationalisation, j'utilise Mojolicious::Plugin::I18N. Le plus simple est encore de l'installer par le CPAN :
+
+```shell
+cpan Mojolicious::Plugin::I18N
+```
+
 ##Configuration
 Vous trouverez trois exemples de fichiers de configurations dans le dépôt git : `etherpad_admin.conf.sqlite.sample`, `etherpad_admin.conf.mysql.sample` et `etherpad_admin.conf.postgresql.sample`.
 Recopiez ou renommez celui dont vous avez besoin en `etherpad_admin.conf`.
