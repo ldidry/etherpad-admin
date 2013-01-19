@@ -17,7 +17,11 @@ Utilisez la commande cpan pour les installer ou, pour Debian :
 apt-get install libmojolicious-perl libdbix-class-perl
 ```
 
-__Note__: Le binaire `/usr/bin/hypnotoad` utilisé par etherpad-admin, n'est disponible qu'à partir de la version wheezy de l'archive Debian (debian7).
+__Note__: Le binaire /usr/bin/hypnotoad (fourni par Mojolicious) utilisé par etherpad-admin, n'est disponible qu'à partir de la version wheezy (debian7) du paquet libmojolicious-perl. Utilisez la commande cpan pour installer Mojolicious sur debian stable.
+
+```shell
+cpan Mojolicious
+```
 
 Pour l'accès à la base de données, vous aurez besoin de DBD::SQLite, de DBD::mysql ou de DBD::Pg selon votre type de base de données.
 Pour Debian, ces modules sont fournis respectivement par les paquets libdbd-sqlite3-perl, libdbd-mysql-perl et libdbd-pg-perl.
