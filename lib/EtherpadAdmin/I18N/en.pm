@@ -2,11 +2,19 @@
 package EtherpadAdmin::I18N::en;
 use Mojo::Base 'EtherpadAdmin::I18N';
 
+
 our %Lexicon = (
+    anonymous           => ' anonymous',
+    anonymous_several   => ' anonymous',
+    authors_list        => 'Authors list:',
     cancel              => 'Cancel',
+    content             => 'Content:',
     create_new_pad      => 'Create new pad',
+    date_format         => '%A %d %B %Y, at %T',
     delete              => 'Delete',
     deletion            => 'Deletion',
+    infos               => 'Details',
+    last_edit           => 'Last edition:',
     new_pad_name        => 'New pad name',
     newname             => 'New name',
     newname_exists      => 'The pad [_1] already exists. Please choose an other name.',
@@ -15,12 +23,10 @@ our %Lexicon = (
     pad_delete_notfound => 'The pad [_1] couldn\'t be found and has not been deleted',
     pad_delete_success  => 'The pad [_1] has been deleted.',
     pad_deletion        => 'Delete [_1]',
+    pad_infos           => 'Details of [_1] pad',
     pad_name            => 'Pad name',
-    pad_rename          => 'Rename [_1] pad',
-    pad_rename_notfound => 'The pad [_1] couldn\'t be found and has not been renamed in [_2].',
-    pad_rename_success  => 'The pad [_1] has been renamed in [_2].',
     pads_list           => 'Pads list',
-    rename              => 'Rename',
+    rev_count           => 'Revisions count:',
     sure                => 'Are you sure ?',
     url                 => 'Url',
     url_ro              => 'Read-only url',

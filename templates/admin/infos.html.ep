@@ -1,0 +1,54 @@
+% # vim:set sw=4 ts=4 ft=html expandtab:
+% layout 'default';
+<h2><%=l 'pad_infos', $pad %></h2>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'rev_count' %></strong>
+    </div>
+    <div class="span10">
+        <%= $revisions_count %>
+    </div>
+</div>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'authors_list' %></strong>
+    </div>
+    <div class="span10">
+        <%= $authors %>
+    </div>
+</div>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'last_edit' %></strong>
+    </div>
+    <div class="span10">
+        <%= $last_edited %>
+    </div>
+</div>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'url' %></strong>
+    </div>
+    <div class="span10">
+        <a href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+    </div>
+</div>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'url_ro' %></strong>
+    </div>
+    <div class="span10">
+        <a href="<%= $read_only_url %>"><%= $read_only_url %></a>
+    </div>
+</div>
+<div class="row">
+    &nbsp;
+</div>
+<div class="row">
+    <div class="span2">
+        <strong><%=l 'content' %></strong>
+    </div>
+    <div class="span10">
+        <%== $content %>
+    </div>
+</div>

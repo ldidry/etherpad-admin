@@ -1,154 +1,82 @@
 # vim:set sw=4 ts=4 expandtab:
 package EtherpadAdmin::Admin;
 use Mojo::Base 'Mojolicious::Controller';
+use DateTime;
 use utf8;
 
 sub index {
     my $self = shift;
 
-    my %pads = $self->pads;
+    my $ep   = $self->ep;
+    my $pads = $ep->list_all_pads();
 
     $self->render(
-        pads => \%pads,
+        pads => $pads,
         info => ''
     );
 }
 
-sub rename {
-    my $self     = shift;
-    my $pad      = $self->param('pad');
-    my $newname  = $self->param('newname');
-    if (!$newname) {
-        $self->render(
-            template => 'admin/rename',
-            info     => ['alert-error', $self->l('newname_notnull')],
-            pad      => $pad
-        );
-    }
+sub infos {
+    my $self = shift;
+    my $pad  = $self->param('pad');
 
-    if ($newname =~ m/\//) {
-        $self->render(
-            template => 'admin/rename',
-            info     => ['alert-block', $self->l('newname_noslash')],
-            pad      => $pad
-        );
-    } else {
-        $newname =~ s/\s+|:+|"/_/g;
+    my $ep              = $self->ep;
+    my $revisions_count = $ep->get_revisions_count($pad);
+    my @authors         = $ep->list_names_of_authors_of_pad($pad);
+    my $last_edited     = $ep->get_last_edited($pad);
+    my $read_only_id    = $ep->get_read_only_id($pad);
+    my $content         = $ep->get_html($pad);
 
-        my $db    = $self->db;
-        my $taken = $db->resultset('Store')->find(
-            {
-                'me.key' => 'pad2readonly:'.$newname
-            }
-        );
+    $self->debug($content);
 
-        if ($taken) {
-            $self->render(
-                template => 'admin/rename',
-                info     => ['alert-block', $self->l('newname_exists', $newname)],
-                pad      => $pad
-            );
+    # I18n for the anonymous authors
+    if ($authors[-1]  =~ s/^(\d+) anonymous$/$1/) {
+        if ($authors[-1] == 1) {
+            $authors[-1] .= $self->l('anonymous');
         } else {
-            my $notfound = 0;
-
-            my $rs = $db->resultset('Store')->search({ 'me.value' => "\"$pad\"" });
-            if ($rs->count()) {
-                while (my $record = $rs->next()) {
-                    my $value = $record->{_column_data}->{value};
-
-                    $value =~ s/^"$pad"$/"$newname"/;
-                    $record->update(
-                        {
-                            'value' => $value
-                        }
-                    );
-                }
-            } else {
-                $notfound++;
-            }
-
-            for my $keyword (qw/pad pad2readonly/) {
-                $rs = $db->resultset('Store')->search({ 'me.key' => "$keyword:$pad" });
-                if ($rs->count()) {
-                    while (my $record = $rs->next()) {
-                        my $key = $record->{_column_data}->{key};
-
-                        $key    =~ s/^$keyword:$pad/$keyword:$newname/;
-                        $record->update(
-                            {
-                                'key' => $key
-                            }
-                        );
-                    }
-                } else {
-                    $notfound++;
-                }
-            }
-
-            $rs = $db->resultset('Store')->search({ 'me.key'   => { -like => 'pad:'.$pad.':%' }});
-            if ($rs->count()) {
-                while (my $record = $rs->next()) {
-                    my $key   = $record->{_column_data}->{key};
-
-                    $key      =~ s/^pad:$pad:/pad:$newname:/;
-                    $record->update(
-                        {
-                            'key' => $key
-                        }
-                    );
-                }
-            } else {
-                $notfound++;
-            }
-
-            my $info;
-            if ($notfound == 4) {
-                $info = ['alert-error', $self->l('pad_rename_notfound', $pad, $newname)];
-            } else {
-                $info = ['alert-success', $self->l('pad_rename_success', $pad, $newname)];
-            }
-
-            my %pads = $self->pads;
-
-            $self->render(
-                template => 'admin/index',
-                pads     => \%pads,
-                info     => $info
-            );
+            $authors[-1] .= $self->l('anonymous_several');
         }
     }
+    my $authors = join(', ', @authors);
+
+    # $last_edited is in millisecondes
+    $last_edited =~ s/\d{3}$//;
+    my $dt = DateTime->from_epoch(epoch => $last_edited, locale => $self->languages);
+    $last_edited = $dt->strftime($self->l('date_format'));
+
+    # Create the ro url
+    my $read_only_url = $self->config->{etherpadurl}.'/p/'.$read_only_id;
+
+    $self->render(
+        info            => '',
+        pad             => $pad,
+        revisions_count => $revisions_count,
+        authors         => $authors,
+        last_edited     => $last_edited,
+        read_only_url   => $read_only_url,
+        content         => $content
+    );
 }
 
 sub delete {
     my $self = shift;
     my $pad  = $self->param('pad');
 
-    my $db = $self->db;
-    my $rs = $db->resultset('Store')->search(
-        {
-            -or => [
-                { 'value' => "\"$pad\""},
-                { 'key'   => 'pad:'.$pad },
-                { 'key'   => 'pad2readonly:'.$pad },
-                { 'key'   => { -like => 'pad:'.$pad.':%' } }
-            ]
-        }
-    );
+    my $ep = $self->ep;
+    my $result = $ep->delete_pad($pad);
 
     my $info;
-    if ($rs->count()) {
-        $rs->delete();
-
+    if ($result == 1) {
         $info = ['alert-success', $self->l('pad_delete_success', $pad)];
     } else {
         $info = ['alert-error', $self->l('pad_delete_notfound', $pad)];
     }
 
-    my %pads = $self->pads;
+    my $pads = $ep->list_all_pads();
 
     $self->render(
         template => 'admin/index',
-        pads     => \%pads,
+        pads     => $pads,
         info     => $info
     );
 }

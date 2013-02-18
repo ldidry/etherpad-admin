@@ -6,35 +6,20 @@
         <tr>
             <th><%=l 'pad_name' %></th>
             <th><%=l 'url' %></th>
-% if ($self->config->{showreadonly}) {
-            <th><%=l 'url_ro' %></th>
-% }
         </tr>
     </thead>
     <tbody>
-% my @pads_name = sort {$a cmp $b} keys %{$pads};
-% foreach my $pad (@pads_name) {
+% foreach my $pad (@{$pads}) {
         <tr>
             <td><%= $pad %></td>
             <td>
                 <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
             </td>
-%   if ($self->config->{showreadonly}) {
-            <td>
-%       if ($pads->{$pad}) {
-                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pads->{$pad} %>"><%= $self->config->{etherpadurl}.'/p/'.$pads->{$pad} %></a>
-%       }
-            </td>
-%   }
-%   if ($self->config->{allowdelete} || $self->config->{allowrename}) {
+%   if ($self->config->{allowdelete}) {
             <td>
                 <span class="pull-right">
-%       if ($self->config->{allowdelete}) {
                     <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>"><%=l 'delete' %></a>
-%       }
-%       if ($self->config->{allowrename}) {
-                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'renamepad' %><%= $pad %>"><%=l 'rename' %></a>
-%       }
+                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'infospad' %><%= $pad %>"><%=l 'infos' %></a>
                 </span>
             </td>
 %   }
@@ -44,8 +29,6 @@
 </table>
 <script>
     $(document).ready(function() {
-        console.log(location);
         history.pushState({ text: 'Etherpad::Admin' }, 'Etherpad::Admin', '<%= $self->config->{urlprefix} %><%= url_for 'home' %>');
-        console.log(location);
     });
 </script>
