@@ -28,12 +28,15 @@ sub startup {
     $self->app->helper(
         ep => sub {
             my $self = shift;
-            my $ep = Etherpad::API->new(
-                {
-                    url    => $self->config->{etherpadurl},
-                    apikey => $self->config->{apikey}
-                }
-            );
+            my $parameters = {
+                url    => $self->config->{etherpadapiurl} || $self->config->{etherpadurl},
+                apikey => $self->config->{apikey}
+            };
+            if (defined($self->config->{epluser}) && defined($self->config->{eplpassword})) {
+                $parameters->{user}     = $self->config->{epluser};
+                $parameters->{password} = $self->config->{eplpassword};
+            }
+            my $ep = Etherpad::API->new($parameters);
 
             return $ep;
         }

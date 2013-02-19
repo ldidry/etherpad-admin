@@ -5,8 +5,11 @@
         listen  => ['http://127.0.0.1:4242'],
         workers => 2,
     },
-    allowdelete  => 0,
-    etherpadurl  => 'https://etherpad.example.com',
-    apikey       => 'S3cr3tP4ss',
-    urlprefix    => '/liste'
+    allowdelete    => 0,
+    etherpadurl    => 'https://etherpad.example.com',
+    etherpadapiurl => 'http://127.0.0.1:9001',
+    epluser        => 'api',
+    eplpassword    => 'apiUserPasswd',
+    apikey         => 'S3cr3tP4ss',
+    urlprefix      => '/liste'
 };

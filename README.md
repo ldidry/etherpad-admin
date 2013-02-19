@@ -46,13 +46,16 @@ cpan DateTime
 ##Configuration
 You will find a configuration file in the git repository : `examples/etherpad_admin.conf.sample`.
 Recopy or rename the one you need in `etherpad_admin.conf`.
-* `allowdelete` : denies the pads' deletion if equal to 0, allows (anyone !) to delete pads if equal to 1.
-* `etherpadurl` : this is the administrated etherpad's URL.
-* `apikey`      : this is the administrated etherpad's secret API key.
-* `urlprefix`   : the path you use to access etherpad-admin.
+* `allowdelete`    : denies the pads' deletion if equal to 0, allows (anyone !) to delete pads if equal to 1.
+* `etherpadurl`    : this is the administrated etherpad's URL.
+* `etherpadapiurl` : __Optional__ if the etherpad api url needs to be different from etherpadurl
+* `epluser`        : __Optional__ the epl user if it needs an authentication
+* `eplpassword`    : __Optional__ the epl password if it needs an authentication
+* `apikey`         : this is the administrated etherpad's secret API key.
+* `urlprefix`      : the path you use to access etherpad-admin.
   For example, if you access it with the http://example.com/etherpad-admin/ URL, urlprefix has to be '/etherpad-admin'.
   If you access it by the http://padadmin.example.com/ URL, it will be ''.
-* `hypnotoad`   : the hypnotoad web server configuration. Please, have a look here : http://mojolicio.us/perldoc/Mojo/Server/Hypnotoad
+* `hypnotoad`      : the hypnotoad web server configuration. Please, have a look here : http://mojolicio.us/perldoc/Mojo/Server/Hypnotoad
 
 ```perl
 {
