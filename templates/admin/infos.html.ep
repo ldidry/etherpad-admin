@@ -30,7 +30,7 @@
         <strong><%=l 'url' %></strong>
     </div>
     <div class="span10">
-        <a href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+        <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
     </div>
 </div>
 <div class="row">
@@ -38,7 +38,7 @@
         <strong><%=l 'url_ro' %></strong>
     </div>
     <div class="span10">
-        <a href="<%= $read_only_url %>"><%= $read_only_url %></a>
+        <a target="_blank" href="<%= $read_only_url %>"><%= $read_only_url %></a>
     </div>
 </div>
 <div class="row">

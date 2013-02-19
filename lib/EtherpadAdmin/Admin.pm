@@ -27,10 +27,8 @@ sub infos {
     my $read_only_id    = $ep->get_read_only_id($pad);
     my $content         = $ep->get_html($pad);
 
-    $self->debug($content);
-
     # I18n for the anonymous authors
-    if ($authors[-1]  =~ s/^(\d+) anonymous$/$1/) {
+    if (@authors && $authors[-1]  =~ s/^(\d+) anonymous$/$1/) {
         if ($authors[-1] == 1) {
             $authors[-1] .= $self->l('anonymous');
         } else {
