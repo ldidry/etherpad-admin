@@ -1,6 +1,9 @@
 % # vim:set sw=4 ts=4 ft=html expandtab:
 % layout 'default';
-<h2><%=l 'pad_infos', $pad %></h2>
+<h2>
+    <%=l 'pad_infos', $pad %>
+    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %>"><%=l 'delete' %></a>
+</h2>
 <div class="row">
     <div class="span2">
         <strong><%=l 'rev_count' %></strong>

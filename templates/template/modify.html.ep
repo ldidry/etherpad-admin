@@ -1,0 +1,14 @@
+% # vim:set sw=4 ts=4 ft=html expandtab:
+% layout 'default';
+<h2><%=l 'template_modify', $datas->{name} %></h2>
+<form>
+    <fieldset>
+        <label><%=l 'template_name' %></label>
+        <input required type="text" name="name" value="<%= $datas->{name} %>">
+        <input required type="hidden" name="clean_name" value="<%= $clean_name %>">
+        <label><%=l 'template_content' %></label>
+        <textarea required rows="10" class="span12" name="text"><%= $datas->{text} %></textarea><br>
+        <a class="btn btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'templates' %>"><%=l 'cancel' %></a>
+        <button type="submit" class="btn btn-success" formaction="<%= $self->config->{urlprefix} %><%= url_for 'modify_template' %>" formmethod=post><%=l 'submit' %></button>
+    </fieldset>
+</form>

@@ -12,10 +12,15 @@ sub startup {
     $self->plugin('PODRenderer');
 
     # Config
-    my $config = $self->plugin('Config'); 
+    my $config = $self->plugin('Config');
+
 
     # Internationalization
     $self->plugin('I18N');
+
+
+    # Template handling
+    $self->plugin('Template');
 
 
     ## Helpers
@@ -54,8 +59,11 @@ sub startup {
 
     if ($config->{allowdelete}) {
         $r->get('/delete/:pad' => sub {
-            $self = shift;
-            $self->render(template => 'admin/delete', info => '')
+            my $self = shift;
+            $self->render(
+                template => 'admin/delete',
+                info     => undef
+            );
         });
 
         $r->post('/delete')->
@@ -64,6 +72,54 @@ sub startup {
 
     $r->get('/infos/:pad')->
         to(controller => 'Admin', action => 'infos');
+
+    $r->post('/create')->
+        name('createpad')->
+        to(controller => 'Admin', action => 'create');
+
+    $r->get('templates')->
+        to(controller => 'template', action => 'index');
+
+    $r->get('templates/add' => sub {
+        my $self = shift;
+        $self->render(
+            template => 'template/add',
+            info     => undef,
+            tname    => '',
+            ttext    => ''
+        );
+    })->name('add_template');
+
+    $r->post('templates/add')->
+        name('add_template')->
+        to(controller => 'template', action => 'add');
+
+    $r->get('templates/modify/:clean_name' => sub {
+        my $self = shift;
+        $self->render(
+            template   => 'template/modify',
+            info       => undef,
+            clean_name => $self->param('clean_name'),
+            datas      => $self->templates->{$self->param('clean_name')}
+        );
+    })->name('modify_template');
+
+    $r->post('templates/modify/:clean_name')->
+        name('modify_template')->
+        to(controller => 'template', action => 'modify');
+
+    $r->get('templates/delete/:clean_name' => sub {
+        my $self = shift;
+        $self->render(
+            template   => 'template/delete',
+            info       => undef,
+            clean_name => $self->param('clean_name'),
+            datas      => $self->templates->{$self->param('clean_name')}
+        );
+    })->name('delete_template');
+
+   $r->post('templates/delete')->
+       to(controller => 'template', action => 'delete');
 }
 
 1;

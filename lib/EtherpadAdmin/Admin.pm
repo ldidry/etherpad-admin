@@ -10,9 +10,39 @@ sub index {
     my $ep   = $self->ep;
     my $pads = $ep->list_all_pads();
 
+    my $info;
+    $info = ['alert', $self->l('no_pads')] unless(@{$pads});
+
     $self->render(
         pads => $pads,
-        info => ''
+        info => $info
+    );
+}
+
+sub create {
+    my $self       = shift;
+    my $pad        = $self->param('pad');
+    my $clean_name = $self->param('clean_name');
+    my ($result, $message);
+
+    my $template = ($clean_name eq '') ? undef : $self->templates->{$clean_name};
+
+    my $ep   = $self->ep;
+    my @pads = $ep->list_all_pads();
+    my %hash = map { $_, 1 } @pads;
+
+    if (defined $hash{$pad}) {
+        $result  = 0;
+        $message = $self->l('newname_exists', $pad);
+    } else {
+        $result = $ep->create_pad($pad, $template->{text});
+    }
+
+    $self->render_json({
+            success => $result,
+            message => $message,
+            pad     => $pad
+        }
     );
 }
 
@@ -46,7 +76,7 @@ sub infos {
     my $read_only_url = $self->config->{etherpadurl}.'/p/'.$read_only_id;
 
     $self->render(
-        info            => '',
+        info            => undef,
         pad             => $pad,
         revisions_count => $revisions_count,
         authors         => $authors,
@@ -65,12 +95,13 @@ sub delete {
 
     my $info;
     if ($result == 1) {
-        $info = ['alert-success', $self->l('pad_delete_success', $pad)];
+        $info = [['alert-success', $self->l('pad_delete_success', $pad)]];
     } else {
-        $info = ['alert-error', $self->l('pad_delete_notfound', $pad)];
+        $info = [['alert-error', $self->l('pad_delete_notfound', $pad)]];
     }
 
     my $pads = $ep->list_all_pads();
+    unshift @{$info}, ['alert', $self->l('no_pads')] unless(@{$pads});
 
     $self->render(
         template => 'admin/index',
