@@ -1,6 +1,7 @@
 #Etherpad-admin
 
 Etherpad-admin is an interface which lists all the existing pads in an [Etherpad-lite](https://github.com/ether/etherpad-lite) installation, allows you to delete pads, create pads and get some informations about the pads.
+You can also manage templates for new pads : set texts and reuse them for creating pads.
 
 ![Screenshot](https://raw.github.com/ldidry/etherpad-admin/master/demo.png)
 
@@ -43,6 +44,11 @@ or
 cpan DateTime
 ```
 
+More modules you have to install : Text::CleanFragment and Storable
+```shell
+cpan Text::CleanFragment Storable
+```
+
 ##Configuration
 You will find a configuration file in the git repository : `examples/etherpad_admin.conf.sample`.
 Recopy or rename the one you need in `etherpad_admin.conf`.
@@ -73,7 +79,7 @@ Recopy or rename the one you need in `etherpad_admin.conf`.
 ```
 
 ##Others projects dependancies
-Etherpad-admin uses the [Twitter Bootstrap](http://twitter.github.com/bootstrap/) which code is available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Etherpad-admin uses the [Twitter Bootstrap](http://twitter.github.com/bootstrap/) which code is available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0) and jQuery  which code is available under the [MIT License](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt).
 
 ##License
 Etherpad-admin is distributed under the terms of the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
