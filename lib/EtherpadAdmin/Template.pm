@@ -62,31 +62,19 @@ sub modify {
     my $text       = $self->param('text');
 
     my $templates  = $self->templates;
-    my %names     = map { $templates->{$_}->{name}, 1 } keys %{$templates};
     my $info;
-    if (!defined($names{$name})) {
-        $templates->{$clean_name} = {
-            name => $name,
-            text => $text
-        };
-        $self->write_templates;
-        $info = [['alert-success', $self->l('modify_templates', $name)]];
+    $templates->{$clean_name} = {
+        name => $name,
+        text => $text
+    };
+    $self->write_templates;
+    $info = [['alert-success', $self->l('modify_templates', $name)]];
 
-        $self->render(
-            template  => 'template/index',
-            templates => $templates,
-            info      => $info
-        );
-    } else {
-        $info = [['alert-error', $self->l('template_exists', $name)]];
-
-        $self->render(
-            template   => 'template/modify',
-            info       => $info,
-            clean_name => $clean_name,
-            datas      => $templates->{$clean_name}
-        );
-    }
+    $self->render(
+        template  => 'template/index',
+        templates => $templates,
+        info      => $info
+    );
 }
 
 sub delete {
