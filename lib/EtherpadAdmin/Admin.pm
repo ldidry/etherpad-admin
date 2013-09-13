@@ -38,7 +38,7 @@ sub create {
         $result = $ep->create_pad($pad, $template->{text});
     }
 
-    $self->render_json({
+    $self->render(json => {
             success => $result,
             message => $message,
             pad     => $pad
