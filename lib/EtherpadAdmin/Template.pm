@@ -10,6 +10,9 @@ sub index {
     my $templates = $self->templates;
 
     my $info = (keys %{$templates}) ? [] : [['alert', $self->l('no_templates')]];
+    if (defined($self->flash('info')) && $self->flash('info')) {
+        push @{$info}, $self->flash('info');
+    }
 
     $self->render(
         templates => $templates,
@@ -68,13 +71,9 @@ sub modify {
         text => $text
     };
     $self->write_templates;
-    $info = [['alert-success', $self->l('modify_templates', $name)]];
+    $self->flash(info => ['alert-success', $self->l('modify_templates', $name)]);
 
-    $self->render(
-        template  => 'template/index',
-        templates => $templates,
-        info      => $info
-    );
+    $self->redirect_to( $self->config->{urlprefix}.'/templates')
 }
 
 sub delete {
