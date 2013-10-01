@@ -11,7 +11,7 @@ sub index {
     my $pads = $ep->list_all_pads();
 
     my $info;
-    $info = ['alert', $self->l('no_pads')] unless(@{$pads});
+    $info = [['alert', $self->l('no_pads')]] unless(@{$pads});
 
     $self->render(
         pads => $pads,
