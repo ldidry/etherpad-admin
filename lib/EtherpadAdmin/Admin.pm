@@ -2,6 +2,7 @@
 package EtherpadAdmin::Admin;
 use Mojo::Base 'Mojolicious::Controller';
 use DateTime;
+use URI::Encode qw(uri_encode uri_decode);
 use utf8;
 
 sub index {
@@ -41,7 +42,7 @@ sub create {
     $self->render(json => {
             success => $result,
             message => $message,
-            pad     => $pad
+            pad     => uri_encode($pad, { encode_reserved => 1 } )
         }
     );
 }

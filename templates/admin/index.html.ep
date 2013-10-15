@@ -19,8 +19,8 @@
 %   if ($self->config->{allowdelete}) {
             <td>
                 <span class="pull-right">
-                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= $pad %>"><%=l 'delete' %></a>
-                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'infospad' %><%= $pad %>"><%=l 'infos' %></a>
+                    <a class="btn btn-mini btn-danger" href="<%= $self->config->{urlprefix} %><%= url_for 'deletepad' %><%= uri_encode($pad, { encode_reserved => 1 } ) %>"><%=l 'delete' %></a>
+                    <a class="btn btn-mini btn-info" href="<%= $self->config->{urlprefix} %><%= url_for 'infospad' %><%= uri_encode($pad, { encode_reserved => 1 } ) %>"><%=l 'infos' %></a>
                 </span>
             </td>
 %   }

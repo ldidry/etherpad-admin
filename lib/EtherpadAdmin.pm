@@ -58,7 +58,7 @@ sub startup {
         to(controller => 'Admin', action => 'index');
 
     if ($config->{allowdelete}) {
-        $r->get('/delete/:pad' => sub {
+        $r->get('/delete/*pad' => sub {
             my $self = shift;
             $self->render(
                 template => 'admin/delete',
@@ -70,7 +70,7 @@ sub startup {
             to(controller => 'Admin', action => 'delete');
     }
 
-    $r->get('/infos/:pad')->
+    $r->get('/infos/*pad')->
         to(controller => 'Admin', action => 'infos');
 
     $r->post('/create')->

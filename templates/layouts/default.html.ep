@@ -25,7 +25,7 @@
                     },
                     success: function(data) {
                         if (data.success === 1) {
-                            window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+$('#newpad').val());
+                            window.open('<%= $self->config->{etherpadurl}.'/p/'%>'+data.pad);
                             window.location.href = '<%= $self->config->{urlprefix} %><%= url_for 'home' %>';
                         } else {
                             console.log(data.message);
