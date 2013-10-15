@@ -1,4 +1,5 @@
 % # vim:set sw=4 ts=4 ft=html expandtab:
+% use URI::Encode qw(uri_encode uri_decode);
 % layout 'default';
 <h2><%=l 'pads_list' %></h2>
 <table class="table table-striped">
@@ -13,7 +14,7 @@
         <tr>
             <td><%= $pad %></td>
             <td>
-                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.$pad %>"><%= $self->config->{etherpadurl}.'/p/'.$pad %></a>
+                <a target="_blank" href="<%= $self->config->{etherpadurl}.'/p/'.uri_encode($pad, { encode_reserved => 1 } ) %>"><%= $self->config->{etherpadurl}.'/p/'.uri_encode($pad, { encode_reserved => 1 } ) %></a>
             </td>
 %   if ($self->config->{allowdelete}) {
             <td>
