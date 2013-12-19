@@ -9,7 +9,7 @@ sub index {
     my $self = shift;
 
     my $ep   = $self->ep;
-    my $pads = $ep->list_all_pads();
+    my $pads = $ep->list_all_pads() || [];
 
     my $info;
     $info = [['alert', $self->l('no_pads')]] unless(@{$pads});
