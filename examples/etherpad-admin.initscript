@@ -14,12 +14,25 @@
 ### END INIT INFO
 
 
-DAEMON=/var/www/etherpad_admin/script/etherpad_admin
+SCRIPT=script/etherpad_admin
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
 NAME="Etherpad-admin"
 
+if [ -f "/etc/default/etherpad-admin" ]
+then
+   . /etc/default/etherpad-admin
+   if [ -z $EADIR ]
+   then
+      echo "EADIR variable is empty, please fill it in /etc/default/etherpad-admin"
+      exit 0
+   fi
+else
+   echo "Missing /etc/default/etherpad_admin file"
+   exit 0
+fi
+
 # Exit if the package is not installed
-[ -x "$DAEMON" ] || exit 0
+[ -x "$EADIR$SCRIPT" ] || exit 0
 
 log_daemon_msg()
 {
@@ -45,7 +58,8 @@ do_start()
    # 1 if daemon was already running
    # 2 if daemon could not be started
 
-   hypnotoad $DAEMON
+   cd $EADIR
+   carton exec hypnotoad $SCRIPT
    RETVAL="$?"
    return "$RETVAL"
 }
@@ -61,7 +75,8 @@ do_stop()
    # 2 if daemon could not be stopped
    # other if a failure occurred
 
-   hypnotoad -s $DAEMON >/dev/null 2>&1
+   cd $EADIR
+   carton exec hypnotoad -s $SCRIPT >/dev/null 2>&1
    RETVAL="$?"
    return "$RETVAL"
 }
@@ -71,10 +86,17 @@ do_stop()
 #
 do_status()
 {
-   pidof $DAEMON >/dev/null 2>&1
-   if [ "$?" = "0" ]; then
-      log_daemon_msg "$NAME is running"
-      echo ""
+   cd $EADIR
+   if [ -f "script/hypnotoad.pid" ]
+   then
+      pgrep -ns $(cat script/hypnotoad.pid) >/dev/null 2>&1
+      if [ "$?" = "0" ]; then
+         log_daemon_msg "$NAME is running"
+         echo ""
+      else
+         log_daemon_msg "$NAME is NOT running"
+         echo ""
+      fi
    else
       log_daemon_msg "$NAME is NOT running"
       echo ""
@@ -84,10 +106,21 @@ do_status()
 case "$1" in
    start)
       [ "$VERBOSE" != no ] && log_daemon_msg "Starting $NAME"
-      pidof $DAEMON >/dev/null 2>&1
-      if [ "$?" = "0" ]; then
-         log_daemon_msg "$NAME is already running. Unable to start"
-         echo ""
+      cd $EADIR
+      if [ -f "script/hypnotoad.pid" ]
+      then
+          pgrep -ns $(cat script/hypnotoad.pid) >/dev/null 2>&1
+          if [ "$?" = "0" ]; then
+             log_daemon_msg "$NAME is already running. Unable to start"
+             echo ""
+          else
+             do_start
+             RETVAL="$?"
+             case "$RETVAL" in
+                0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+                2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+             esac
+          fi
       else
          do_start
          RETVAL="$?"
@@ -99,13 +132,20 @@ case "$1" in
       ;;
    stop)
       [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $NAME"
-      pidof $DAEMON >/dev/null 2>&1
-      if [ "$?" = "0" ]; then
-         do_stop
-         case "$?" in
-            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-            2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-         esac
+      cd $EADIR
+      if [ -f "script/hypnotoad.pid" ]
+      then
+         pgrep -ns $(cat script/hypnotoad.pid) >/dev/null 2>&1
+         if [ "$?" = "0" ]; then
+            do_stop
+            case "$?" in
+               0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+               2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+            esac
+         else
+            log_daemon_msg "$NAME is NOT running. Unable to stop"
+            echo ""
+         fi
       else
          log_daemon_msg "$NAME is NOT running. Unable to stop"
          echo ""
@@ -113,6 +153,11 @@ case "$1" in
       ;;
    status)
       do_status
+      ;;
+   reload)
+      log_daemon_msg "Reloading $NAME"
+      do_start
+      echo ""
       ;;
    restart)
       log_daemon_msg "Restarting $NAME"
@@ -122,7 +167,7 @@ case "$1" in
       echo ""
       ;;
    *)
-      echo "Usage: $0 {start|stop|status|restart}" >&2
+      echo "Usage: $0 {start|stop|status|reload|restart}" >&2
       exit 3
       ;;
 esac

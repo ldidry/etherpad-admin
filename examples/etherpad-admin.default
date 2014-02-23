@@ -1,0 +1,3 @@
+# Write your directory where you installed etherpad-admin
+# Must end with /
+EADIR=/var/www/etherpad-admin/

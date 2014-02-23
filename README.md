@@ -12,41 +12,19 @@ There is no authentication, so anyone can delete pads. Remember to set an authen
 From version 0.03, Etherpad-admin uses the Etherpad Lite API, there is a lot of changes, so, please, read this README carefully.
 
 ##Dependancies
-Etherpad-admin uses the Mojolicious Perl framework.
-Use the cpan command to install them or, for Debian :
+The dependancies are handled by `carton`. Install it with `cpan` or from your distribution's repositories:
 ```shell
-apt-get install libmojolicious-perl
-```
-
-__Note__: The /usr/bin/hypnotoad binary (provided by Mojolicious) used by Etherpad-admin, is only available in the wheezy version (debian7) of the libmojolicious-perl package. Uses the cpan command to install Mojolicious on Debian stable.
-
-```shell
-cpan Mojolicious
-```
-
-The internationalization system uses the Perl module Mojolicious::Plugin::I18N. It's easier to install it with the CPAN:
-```shell
-cpan Mojolicious::Plugin::I18N
-```
-
-Etherpad-admin now use the [Etherpad::API](http://search.cpan.org/~ldidry/Etherpad-API-0.04/lib/Etherpad/API.pm) module, developed specially for Etherpad-admin.
-```shell
-cpan Etherpad::API
-```
-
-You will also need the DateTime module.
-```shell
-apt-get install libdatetime-perl
+sudo cpan Carton
 ```
 
 or
 ```shell
-cpan DateTime
+sudo apt-get install carton
 ```
 
-More modules you have to install : Text::CleanFragment and Storable
+Once `carton` is installed, install the dependancies:
 ```shell
-cpan Text::CleanFragment Storable
+carton install
 ```
 
 ##Configuration
@@ -76,6 +54,23 @@ Recopy or rename the one you need in `etherpad_admin.conf`.
     apikey       => 'S3cr3tP4ss',
     urlprefix    => '/liste'
 };
+```
+
+##Run it
+Manually:
+```
+cd YOUR_INSTALL_DIR
+carton exec hypnotoad script/etherpad_admin
+```
+
+With the example init script:
+```
+cd YOUR_INSTALL_DIR
+sudo cp examples/etherpad-admin.initscript /etc/init.d/etherpad-admin
+sudo cp examples/etherpad-admin.default /etc/default/etherpad-admin
+sudo vi /etc/default/etherpad-admin
+sudo update-rc.d etherpad-admin defaults
+sudo service etherpad-admin start
 ```
 
 ##Others projects dependancies
